@@ -1,7 +1,7 @@
 ## TimingWheelScheduler：参考kafka，基于时间轮的定时任务调度实现；支持不同策略推动时钟运转
 
 * 默认时间轮为4层级
-    * 第一层为毫秒级时间轮 tickms = 100,wheelsize = 1000/100
+    * 第一层为毫秒级时间轮 tickms = 10,wheelsize = 100
     * 第二层为秒级时间轮 tickms = 1000,wheelsize = 60
     * 第三层为分钟级时间轮 tickms = 60*1000,wheelsize = 60
     * 第四层为小时级时间轮 tickms = 60*60*1000,wheelsize = 24
@@ -11,11 +11,9 @@
 ## 编译
 直接拉取，vs2017编译即可
 
-## Note
+## 注意点
 * 使用了C++11特性
 * 如果使用默认推动时钟策略，指定步长最好为最底层时钟的时间跨度
-* 如果添加时间点定时任务，则按照添加的时间戳为过期时间
-* 如果添加间隔时间定时任务，该任务过期时间以创建时间轮为相对时间进行计算（无关系统时间）
 
 ## 示例
 
@@ -50,13 +48,9 @@ int main()
         std::cout << "间隔5秒后执行，轮询:" << MsTimeFormat() << std::endl;
     }, true);
 
-    uint64_t timingWheelTimeStamp;
-    if (TimingWheelScheduler::GetInstance().GetLowestTimingWheelTimeMs(timingWheelTimeStamp))
-    {
-        TimingWheelScheduler::GetInstance().AddExpiredAtTimer(timingWheelTimeStamp + 10000, [=]() {
-            std::cout << timingWheelTimeStamp << "+10秒后执行:" << MsTimeFormat() << std::endl;
-        });
-    }
+    TimingWheelScheduler::GetInstance().AddExpiredAtTimer(TimingWheelScheduler::GetInstance().GetLowestTimingWheelTimeMs() + 10000, [=]() {
+        std::cout << "+10秒后执行:" << MsTimeFormat() << std::endl;
+    });
 
     auto timer_id_30s = TimingWheelScheduler::GetInstance().AddExpiredIntervalTimer(30 * 1000, []() {
         std::cout << "间隔30秒后执行，轮询:" << MsTimeFormat() << std::endl;
@@ -67,26 +61,24 @@ int main()
     }, true);
 
     auto timer_id_3m = TimingWheelScheduler::GetInstance().AddExpiredIntervalTimer(180 * 1000, []() {
-        std::cout << "间隔3分钟后执行，轮询:" << MsTimeFormat() << std::endl;
+        std::cout << "3分后执行----------，轮询:" << MsTimeFormat() << std::endl;
     }, true);
 
-    auto timer_id_35m = TimingWheelScheduler::GetInstance().AddExpiredIntervalTimer(35 * 60 * 1000, []() {
-        std::cout << "间隔35分钟后执行，轮询:" << MsTimeFormat() << std::endl;
+    auto timer_id_35m = TimingWheelScheduler::GetInstance().AddExpiredIntervalTimer(35 * 60 * 1000 + 4000, []() {
+        std::cout << "35分4秒执行----------，轮询:" << MsTimeFormat() << std::endl;
     }, true);
 
-    std::this_thread::sleep_for(std::chrono::seconds(30));
-    TimingWheelScheduler::GetInstance().CancelTimer(timer_id_5s);
+    TimingWheelScheduler::GetInstance().AddExpiredIntervalTimer(62 * 60 * 1000, []() {
+        std::cout << "1小时2分后执行-------------，轮询:" << MsTimeFormat() << std::endl;
+    }, true);
 
     std::this_thread::sleep_for(std::chrono::minutes(20));
-    TimingWheelScheduler::GetInstance().CancelTimer(timer_id_30s);
-    TimingWheelScheduler::GetInstance().CancelTimer(timer_id_17s);
-    TimingWheelScheduler::GetInstance().CancelTimer(timer_id_3m);
 
-    TimingWheelScheduler::GetInstance().AddExpiredIntervalTimer(60 * 60 * 1000, []() {
-        std::cout << "间隔1小时后执行，轮询:" << MsTimeFormat() << std::endl;
+    TimingWheelScheduler::GetInstance().AddExpiredIntervalTimer(122 * 60 * 1000, []() {
+        std::cout << "2小时2分后执行-------------，轮询:" << MsTimeFormat() << std::endl;
     }, true);
 
-    std::this_thread::sleep_for(std::chrono::hours(2));
+    std::this_thread::sleep_for(std::chrono::hours(3));
 
     TimingWheelScheduler::GetInstance().StopScheduling();
 
