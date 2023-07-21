@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="timer">
+      <UniqueIdentifier>{ae967bfd-ba7e-42d8-af8d-47a2a71f9631}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="timer\SchedulingStrategy">
+      <UniqueIdentifier>{03c0ea8d-badb-4c13-a915-65787f05cb29}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="TimingWheel.h">
+      <Filter>timer</Filter>
+    </ClInclude>
+    <ClInclude Include="TimingWheelScheduler.h">
+      <Filter>timer</Filter>
+    </ClInclude>
+    <ClInclude Include="TimerTaskEntry.h">
+      <Filter>timer</Filter>
+    </ClInclude>
+    <ClInclude Include="ScheduledPollingStrategy.h">
+      <Filter>timer\SchedulingStrategy</Filter>
+    </ClInclude>
+    <ClInclude Include="ISchedulingStrategy.h">
+      <Filter>timer\SchedulingStrategy</Filter>
+    </ClInclude>
+    <ClInclude Include="AsyncThreadPool.h">
+      <Filter>timer</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TimingWheel.cpp">
+      <Filter>timer</Filter>
+    </ClCompile>
+    <ClCompile Include="TimingWheelScheduler.cpp">
+      <Filter>timer</Filter>
+    </ClCompile>
+    <ClCompile Include="TimerTaskEntry.cpp">
+      <Filter>timer</Filter>
+    </ClCompile>
+    <ClCompile Include="ScheduledPollingStrategy.cpp">
+      <Filter>timer\SchedulingStrategy</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Singleton.inl">
+      <Filter>timer</Filter>
+    </None>
+  </ItemGroup>
+</Project>
